@@ -3,7 +3,7 @@
 /*################################################################################################*/
 
 //var wsbroker = "0.tcp.sa.ngrok.io";
-var wsbroker = "broker.hivemq.com";
+var wsbroker = "mqtt-dashboard.com";
 //var wsbroker = "localhost";
 
 //var wsport = 14792; // port for above
@@ -111,7 +111,7 @@ var options = {
 	onSuccess: function () {
 		console.log("mqtt connected");
 		// Connection succeeded; subscribe to our topic, you can add multile lines of these
-		client.subscribe("grupoUCE2024", { qos: 1 });
+		client.subscribe("grupo1", { qos: 1 });
 	},
 	onFailure: function (message) {
 		console.log("Connection failed: " + message.errorMessage);
