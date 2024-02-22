@@ -28,57 +28,23 @@ let prevDiskValue = 0;
 let prevRecepcionValue = 0;
 
 client.onMessageArrived = function (message) {
-    console.log("hola aqui")
-    console.log(message)
-	let destination = message.destinationName;
-	if (destination === "probar_1") {
+    console.log("Mensaje recibido");
+    console.log(message);
+    let destination = message.destinationName;
+    if (destination === "grupo1") {
         let response = JSON.parse(message.payloadString);
-        dataFormat = response;
-        let dataMemoria = dataFormat.Memoria;
-        let dataDisco = dataFormat.Disco;
-        let dataRecepcion = dataFormat.Recepcion;
         
-        //info pc
-        document.getElementById("arquitecturaValue").innerText = response.Arquitectura;
-        document.getElementById("sistemaValue").innerText = response.Sistema;
-        document.getElementById("ramValue").innerText = response.Ram;
-        document.getElementById("procesadorValue").innerText = response.Procesador;
-        document.getElementById("almacenamientoValue").innerText = response.Almacenamiento;
-
-        // Calcular la diferencia con respecto al valor anterior
-        let diffCPU = dataCPU - prevCPUValue;
-        let diffMemory = dataMemoria - prevMemoryValue;
-        let diffDisk = dataDisco - prevDiskValue;
-        let diffRecepcion = dataRecepcion - prevRecepcionValue;
-
-        // Calcular el porcentaje de cambio
-        let percentageCPU = calculatePercentage(diffCPU, prevCPUValue);
-        let percentageMemory = calculatePercentage(diffMemory, prevMemoryValue);
-        let percentageDisk = calculatePercentage(diffDisk, prevDiskValue);
-        let percentageRecepcion = calculatePercentage(diffRecepcion, prevRecepcionValue);
-
+        // Extraer los datos necesarios del mensaje JSON recibido
+        let memoryAvailable = response.memoria_disponible;
+        let memoryUsed = response.memoria_usada;
+        let networkPerformance = response.rendimiento_red;
+        let temperature = response.temperatura;
+        
         // Actualizar los valores en tiempo real en la página
-        document.getElementById("cpuValue").innerText = dataCPU;
-        document.getElementById("memoryValue").innerText = dataMemoria;
-        document.getElementById("diskValue").innerText = dataDisco;
-        document.getElementById("RecepcionValue").innerText = dataRecepcion;
-
-        // Actualizar los porcentajes en la página
-        document.getElementById("cpuPercentage").innerHTML = getColoredPercentage(percentageCPU);
-        document.getElementById("memoryPercentage").innerHTML = getColoredPercentage(percentageMemory);
-        document.getElementById("diskPercentage").innerHTML = getColoredPercentage(percentageDisk);
-        document.getElementById("RecepcionPercentage").innerHTML = getColoredPercentage(percentageRecepcion);
-
-        // Actualizar los valores anteriores con los nuevos valores
-        prevCPUValue = dataCPU;
-        prevMemoryValue = dataMemoria;
-        prevDiskValue = dataDisco;
-        prevRecepcionValue = dataRecepcion;
-
-        // Cargar datos CPU, Memoria y Almacenamiento en las gráficas
-        addData(myChartCPU, dataCPU);
-        addData2(myChartMemory, dataMemoria);
-        addData3(myChartDisk, dataDisco);
+        document.getElementById("memoryAvailableValue").textContent = memoryAvailable;
+        document.getElementById("memoryUsedValue").innerText = memoryUsed;
+        document.getElementById("networkPerformanceValue").innerText = networkPerformance;
+        document.getElementById("temperatureValue").innerText = temperature;
     }
 };
 
@@ -92,7 +58,7 @@ function calculatePercentage(diff, prevValue) {
     if (isFinite(percentage)) {
         return percentage >= 0 ? "+" + percentage : percentage;
     } else {
-        return "0";
+        return "No Disponible";
     }
 }
 // Función para obtener el porcentaje coloreado
