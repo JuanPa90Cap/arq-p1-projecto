@@ -42,9 +42,9 @@ client.onMessageArrived = function (message) {
         
         // Actualizar los valores en tiempo real en la página
         document.getElementById("memoryAvailableValue").textContent = memoryAvailable;
-        document.getElementById("memoryUsedValue").innerText = memoryUsed;
-        document.getElementById("networkPerformanceValue").innerText = networkPerformance;
-        document.getElementById("temperatureValue").innerText = temperature;
+        document.getElementById("memoryUsedValue").textContent = memoryUsed;
+        document.getElementById("networkPerformanceValue").textContent = networkPerformance;
+        document.getElementById("temperatureValue").textContent = temperature;
     }
 };
 
