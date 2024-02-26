@@ -41,10 +41,10 @@ client.onMessageArrived = function (message) {
         let computerID = response.id_computadora; // Agregamos el ID de la computadora
 
         // Actualizar los valores en tiempo real en la página
-        document.getElementById("memoryAvailableValue").textContent = memoryAvailable;
-        document.getElementById("memoryUsedValue").textContent = memoryUsed;
-        document.getElementById("networkPerformanceValue").textContent = networkPerformance;
-        document.getElementById("computerIDValue").textContent = computerID; // Mostramos el ID de la computadora
+        document.getElementById("memoryAvailableValue2").textContent = memoryAvailable;
+        document.getElementById("memoryUsedValue2").textContent = memoryUsed;
+        document.getElementById("networkPerformanceValue2").textContent = networkPerformance;
+        document.getElementById("computerIDValue2").textContent = computerID; // Mostramos el ID de la computadora
     }
 };
 

@@ -38,6 +38,9 @@
   <script>
     initMqtt();
   </script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
 </head>
 <!-- Cuadrito morado -->
 <body class="g-sidenav-show   bg-gray-100">
@@ -269,8 +272,8 @@
               <div class="row">
                 <div class="col-8">
                   <div class="numbers">
-                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Memoria Disponible</p>
-                    <h5 id="memoryAvailableValue" class="font-weight-bolder">
+                    <p class="text-sm mb-0 text-uppercase font-weight-bold">ID CPU</p>
+                    <h5 id="computerIDValue" class="font-weight-bolder">
                     53,000
                     </h5>
                     <p class="mb-0">
@@ -294,8 +297,8 @@
               <div class="row">
                 <div class="col-8">
                   <div class="numbers">
-                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Memoria Usada </p>
-                    <h5 id="memoryUsedValue" class="font-weight-bolder">
+                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Memoria Disponible </p>
+                    <h5 id="memoryAvailableValue" class="font-weight-bolder">
                       2,300
                     </h5>
                     <p class="mb-0">
@@ -319,8 +322,8 @@
               <div class="row">
                 <div class="col-8">
                   <div class="numbers">
-                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Rendimiento Red</p>
-                    <h5 id="networkPerformanceValue" class="font-weight-bolder">
+                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Memoria Usada</p>
+                    <h5 id="memoryUsedValue" class="font-weight-bolder">
                       +3,462
                     </h5>
                     <p class="mb-0">
@@ -344,9 +347,9 @@
               <div class="row">
                 <div class="col-8">
                   <div class="numbers">
-                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Temperatura</p>
-                    <h5 id="temperatureValue" class="font-weight-bolder">
-                      $103,430
+                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Rendimiento Red</p>
+                    <h5 id="networkPerformanceValue" class="font-weight-bolder">
+                      0
                     </h5>
                     <p class="mb-0">
                       <span class="text-success text-sm font-weight-bolder">+5%</span> than last month
@@ -362,7 +365,7 @@
             </div>
           </div>
         </div>
-      <!-- Empieza la otra coputadora--> 
+      <!-- Empieza la otra coputadora
       <div class="row">
         <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
           <div class="card">
@@ -371,7 +374,7 @@
                 <div class="col-8">
                   <div class="numbers">
                     <p class="text-sm mb-0 text-uppercase font-weight-bold">USO CPU</p>
-                    <h5 class="font-weight-bolder">
+                    <h5 id="memoryAvailableValue2" class="font-weight-bolder">
                     Hola Kevin
                     </h5>
                     <p class="mb-0">
@@ -396,7 +399,7 @@
                 <div class="col-8">
                   <div class="numbers">
                     <p class="text-sm mb-0 text-uppercase font-weight-bold">USO MEMORIA</p>
-                    <h5 class="font-weight-bolder">
+                    <h5 id="memoryUsedValue2" class="font-weight-bolder">
                       2,300
                     </h5>
                     <p class="mb-0">
@@ -421,7 +424,7 @@
                 <div class="col-8">
                   <div class="numbers">
                     <p class="text-sm mb-0 text-uppercase font-weight-bold">RENDIMIENTO RED</p>
-                    <h5 class="font-weight-bolder">
+                    <h5 id="networkPerformanceValue2" class="font-weight-bolder">
                       +3,462
                     </h5>
                     <p class="mb-0">
@@ -446,7 +449,7 @@
                 <div class="col-8">
                   <div class="numbers">
                     <p class="text-sm mb-0 text-uppercase font-weight-bold">TEMPERATURA</p>
-                    <h5 class="font-weight-bolder">
+                    <h5 id="temperatureValue2" class="font-weight-bolder">
                       $103,430
                     </h5>
                     <p class="mb-0">
@@ -464,14 +467,14 @@
           </div>
         </div>
 
-      <!-- Termina la otra coputadora--> 
+      Termina la otra coputadora--> 
 
       <!-- Grafica estadistica-->
       <div class="row mt-4">
         <div class="col-lg-7 mb-lg-0 mb-4">
           <div class="card z-index-2 h-100">
             <div class="card-header pb-0 pt-3 bg-transparent">
-              <h6 class="text-capitalize">Sales overview</h6>
+              <h6 class="text-capitalize">Gráfica Estadística</h6>
               <p class="text-sm mb-0">
                 <i class="fa fa-arrow-up text-success"></i>
                 <span class="font-weight-bold">4% more</span> in 2021
@@ -484,6 +487,7 @@
             </div>
           </div>
         </div>
+        
         <div class="col-lg-5">
           <div class="card card-carousel overflow-hidden h-100 p-0">
             <div id="carouselExampleCaptions" class="carousel slide h-100" data-bs-ride="carousel">
