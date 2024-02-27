@@ -41,6 +41,7 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 
+
 </head>
 <!-- Cuadrito morado -->
 
@@ -496,23 +497,102 @@
         <div class="row mt-4">
           <div class="col-lg-7 mb-lg-0 mb-4">
             <div class="card z-index-2 h-100">
-              <div class="card-header pb-0 pt-3 bg-transparent">
-                <h6 class="text-capitalize">Gráfica Estadística</h6>
-                <p class="text-sm mb-0">
-                  <i class="fa fa-arrow-up text-success"></i>
-                  <span class="font-weight-bold">4% more</span> in 2021
-                </p>
-              </div>
-              <div class="card-body p-3">
-                <div class="chart">
-                  <canvas id="chart-line" class="chart-canvas" height="300"></canvas>
+                <div class="card-header pb-0 pt-3 bg-transparent">
+                    <h6 class="text-capitalize">Gráfica Estadística</h6>
+                    <p class="text-sm mb-0">
+                        <i class="fa fa-arrow-up text-success"></i>
+                        <span class="font-weight-bold"> Calculated</span> in 2024
+                    </p>
                 </div>
-              </div>
+                <div class="card-body p-3">
+                    <div class="chart">
+                        <canvas id="grafica-ojiva" class="chart-canvas" height="300"></canvas>
+                    </div>
+                </div>
             </div>
-          </div>
+        </div>
+        
+        <!-- Script para la gráfica -->
+<script>
+  // Función para crear una gráfica de barras con los últimos 10 datos de rendimiento, memoria usada y memoria disponible
+  function crearGraficaBarras(data) {
+      // Tomar solo los últimos 10 elementos de los datos
+      const ultimosDatos = data.slice(-10);
+
+      const nombres = ultimosDatos.map(item => item.mensaje_maquina);
+      const memoriaDisponible = ultimosDatos.map(item => item.memoria_disponible);
+      const memoriaUsada = ultimosDatos.map(item => item.memoria_usada);
+      const rendimientos = ultimosDatos.map(item => item.rendimiento_red);
+
+      const ctx = document.getElementById('grafica-ojiva').getContext('2d');
+      new Chart(ctx, {
+          type: 'bar',
+          data: {
+              labels: nombres,
+              datasets: [{
+                  label: 'Memoria Disponible',
+                  data: memoriaDisponible,
+                  backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                  borderColor: 'rgba(255, 99, 132, 1)',
+                  borderWidth: 1
+              },
+              {
+                  label: 'Memoria Usada',
+                  data: memoriaUsada,
+                  backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                  borderColor: 'rgba(54, 162, 235, 1)',
+                  borderWidth: 1
+              },
+              {
+                  label: 'Rendimiento de Red',
+                  data: rendimientos,
+                  backgroundColor: 'rgba(255, 206, 86, 0.5)',
+                  borderColor: 'rgba(255, 206, 86, 1)',
+                  borderWidth: 1
+              }]
+          },
+          options: {
+              scales: {
+                  y: {
+                      beginAtZero: true,
+                      title: {
+                          display: true,
+                          text: 'Valores'
+                      }
+                  },
+                  x: {
+                      title: {
+                          display: true,
+                          text: 'Mensaje de la Máquina'
+                      }
+                  }
+              }
+          }
+      });
+  }
+
+  // Función para obtener los datos del servidor y actualizar la gráfica en el HTML
+  function obtenerDatosYActualizarGrafica() {
+      fetch('http://localhost/api.php') // Reemplaza la URL con la ruta correcta hacia tu archivo PHP
+          .then(response => response.json())
+          .then(data => {
+              console.log(data);
+              crearGraficaBarras(data); // Llamar a la función para crear la gráfica de barras con los últimos datos del servidor
+          })
+          .catch(error => console.error('Error:', error));
+  }
+
+  // Obtener los datos del servidor y actualizar la gráfica cada 5 segundos
+  obtenerDatosYActualizarGrafica();
+  setInterval(obtenerDatosYActualizarGrafica, 5000);
+</script>
+
+        
+        
 
 
-             <!-- No tocar-->
+
+          <!-- No tocar-->
           <div class="col-lg-5">
             <div class="card card-carousel overflow-hidden h-100 p-0">
               <div id="carouselExampleCaptions" class="carousel slide h-100" data-bs-ride="carousel">
@@ -580,187 +660,222 @@
             </div>
           </div>
         </div>
-         <!-- No tocar-->
-
-         
+        <!-- No tocar-->
 
 
-          <!-- Tabla-->
 
-          <div class="row mt-4">
-            <div class="col-lg-7 mb-lg-0 mb-4">
-                <div class="card">
-                    <div class="card-header pb-0 p-3">
-                        <div class="d-flex justify-content-between">
-                            <h6 class="mb-2">Datos del Sensor</h6>
-                        </div>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table align-items-center">
-                            <thead>
-                                <tr>
-                                    <th>Mensaje de la máquina</th>
-                                    <th>ID de la computadora</th>
-                                    <th>Memoria disponible</th>
-                                    <th>Memoria usada</th>
-                                    <th>Rendimiento de red</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tboy-datos">
-                                <!-- Aquí se llenarán dinámicamente los datos -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+
+<!-- Tabla-->
+
+<div class="row mt-4">
+  <div class="col-lg-7 mb-lg-0 mb-4">
+    <div class="card">
+      <div class="card-header pb-0 p-3">
+        <div class="d-flex justify-content-between">
+          <h6 class="mb-2">Datos del Sensor</h6>
         </div>
-    
-        <script>
-            function obtenerDatosYActualizarTabla() {
-                     fetch('http://localhost/api.php') // Reemplaza la URL con la ruta correcta hacia tu archivo PHP
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log(data);
-                        actualizarTabla(data);
-                    })
-                    .catch(error => console.error('Error:', error));
-            }
-    
-            function actualizarTabla(data) {
-                const tbody = document.getElementById('tboy-datos');
-                tbody.innerHTML = ''; // Limpiar el contenido anterior del tbody
-    
-                data.forEach(item => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${item.mensaje_maquina}</td>
-                        <td>${item.id_computadora}</td>
-                        <td>${item.memoria_disponible}</td>
-                        <td>${item.memoria_usada}</td>
-                        <td>${item.rendimiento_red}</td>
-                    `;
-                    tbody.appendChild(row);
-                });
-            }
-    
-            // Actualizar la tabla cada 5 segundos
-            setInterval(obtenerDatosYActualizarTabla, 1000);
-        </script>
-          
+      </div>
+      <div class="table-responsive" id="table-container" style="max-height: 400px; overflow-y: auto;">
+        <table class="table align-items-center">
+          <thead>
+            <tr>
+              <th>Mensaje de la máquina</th>
+              <th>ID de la computadora</th>
+              <th>Memoria disponible</th>
+              <th>Memoria usada</th>
+              <th>Rendimiento de red</th>
+            </tr>
+          </thead>
+          <tbody id="tboy-datos">
+            <!-- Aquí se llenarán dinámicamente los datos -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
 
-        <!-- Fin tabla--> 
-        
-        
+<script>
+  let datos = [];
+  let currentIndex = 0;
+  const datosPorPagina = 10;
+  let loading = false;
+
+  function obtenerDatosYActualizarTabla() {
+    if (loading) return; // Evitar múltiples solicitudes simultáneas
+    loading = true;
+    fetch('http://localhost/api.php') // Reemplaza la URL con la ruta correcta hacia tu archivo PHP
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        datos = data;
+        actualizarTabla();
+        loading = false;
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        loading = false;
+      });
+  }
+
+  function actualizarTabla() {
+    const tbody = document.getElementById('tboy-datos');
+    const tableContainer = document.getElementById('table-container');
+    const currentScroll = tableContainer.scrollTop;
+
+    tbody.innerHTML = ''; // Limpiar el contenido anterior del tbody
+
+    const startIndex = Math.max(0, datos.length - currentIndex - datosPorPagina);
+    const endIndex = Math.max(0, datos.length - currentIndex);
+    for (let i = startIndex; i < endIndex; i++) {
+      const item = datos[i];
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${item.mensaje_maquina}</td>
+        <td>${item.id_computadora}</td>
+        <td>${item.memoria_disponible}</td>
+        <td>${item.memoria_usada}</td>
+        <td>${item.rendimiento_red}</td>
+      `;
+      tbody.appendChild(row);
+    }
+
+    // Mantener el mismo desplazamiento después de actualizar la tabla
+    tableContainer.scrollTo(0, currentScroll);
+  }
+
+  function handleScroll() {
+    const tableContainer = document.getElementById('table-container');
+    if (tableContainer.scrollHeight - tableContainer.scrollTop === tableContainer.clientHeight) {
+      // El usuario ha llegado al final de la tabla
+      currentIndex += datosPorPagina;
+      actualizarTabla();
+    }
+  }
+
+  // Evento de desplazamiento para detectar cuando el usuario ha llegado al final de la tabla
+  document.getElementById('table-container').addEventListener('scroll', handleScroll);
+
+  // Actualizar la tabla cada 5 segundos
+  obtenerDatosYActualizarTabla();
+  setInterval(obtenerDatosYActualizarTabla, 1000);
+</script>
+
+<!-- Fin tabla-->
+
+
+
+
 
         <!-- HAsta aqui-->
-          <div class="col-lg-5">
-            <div class="card">
-              <div class="card-header pb-0 p-3">
-                <h6 class="mb-0">Categories</h6>
-              </div>
-              <div class="card-body p-3">
-                <ul class="list-group">
-                  <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
-                    <div class="d-flex align-items-center">
-                      <div class="icon icon-shape icon-sm me-3 bg-gradient-dark shadow text-center">
-                        <i class="ni ni-mobile-button text-white opacity-10"></i>
-                      </div>
-                      <div class="d-flex flex-column">
-                        <h6 class="mb-1 text-dark text-sm">Devices</h6>
-                        <span class="text-xs">250 in stock, <span class="font-weight-bold">346+ sold</span></span>
-                      </div>
+        <div class="col-lg-5">
+          <div class="card">
+            <div class="card-header pb-0 p-3">
+              <h6 class="mb-0">Categories</h6>
+            </div>
+            <div class="card-body p-3">
+              <ul class="list-group">
+                <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+                  <div class="d-flex align-items-center">
+                    <div class="icon icon-shape icon-sm me-3 bg-gradient-dark shadow text-center">
+                      <i class="ni ni-mobile-button text-white opacity-10"></i>
                     </div>
-                    <div class="d-flex">
-                      <button class="btn btn-link btn-icon-only btn-rounded btn-sm text-dark icon-move-right my-auto"><i
-                          class="ni ni-bold-right" aria-hidden="true"></i></button>
+                    <div class="d-flex flex-column">
+                      <h6 class="mb-1 text-dark text-sm">Devices</h6>
+                      <span class="text-xs">250 in stock, <span class="font-weight-bold">346+ sold</span></span>
                     </div>
-                  </li>
-                  <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
-                    <div class="d-flex align-items-center">
-                      <div class="icon icon-shape icon-sm me-3 bg-gradient-dark shadow text-center">
-                        <i class="ni ni-tag text-white opacity-10"></i>
-                      </div>
-                      <div class="d-flex flex-column">
-                        <h6 class="mb-1 text-dark text-sm">Tickets</h6>
-                        <span class="text-xs">123 closed, <span class="font-weight-bold">15 open</span></span>
-                      </div>
+                  </div>
+                  <div class="d-flex">
+                    <button class="btn btn-link btn-icon-only btn-rounded btn-sm text-dark icon-move-right my-auto"><i
+                        class="ni ni-bold-right" aria-hidden="true"></i></button>
+                  </div>
+                </li>
+                <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+                  <div class="d-flex align-items-center">
+                    <div class="icon icon-shape icon-sm me-3 bg-gradient-dark shadow text-center">
+                      <i class="ni ni-tag text-white opacity-10"></i>
                     </div>
-                    <div class="d-flex">
-                      <button class="btn btn-link btn-icon-only btn-rounded btn-sm text-dark icon-move-right my-auto"><i
-                          class="ni ni-bold-right" aria-hidden="true"></i></button>
+                    <div class="d-flex flex-column">
+                      <h6 class="mb-1 text-dark text-sm">Tickets</h6>
+                      <span class="text-xs">123 closed, <span class="font-weight-bold">15 open</span></span>
                     </div>
-                  </li>
-                  <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
-                    <div class="d-flex align-items-center">
-                      <div class="icon icon-shape icon-sm me-3 bg-gradient-dark shadow text-center">
-                        <i class="ni ni-box-2 text-white opacity-10"></i>
-                      </div>
-                      <div class="d-flex flex-column">
-                        <h6 class="mb-1 text-dark text-sm">Error logs</h6>
-                        <span class="text-xs">1 is active, <span class="font-weight-bold">40 closed</span></span>
-                      </div>
+                  </div>
+                  <div class="d-flex">
+                    <button class="btn btn-link btn-icon-only btn-rounded btn-sm text-dark icon-move-right my-auto"><i
+                        class="ni ni-bold-right" aria-hidden="true"></i></button>
+                  </div>
+                </li>
+                <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+                  <div class="d-flex align-items-center">
+                    <div class="icon icon-shape icon-sm me-3 bg-gradient-dark shadow text-center">
+                      <i class="ni ni-box-2 text-white opacity-10"></i>
                     </div>
-                    <div class="d-flex">
-                      <button class="btn btn-link btn-icon-only btn-rounded btn-sm text-dark icon-move-right my-auto"><i
-                          class="ni ni-bold-right" aria-hidden="true"></i></button>
+                    <div class="d-flex flex-column">
+                      <h6 class="mb-1 text-dark text-sm">Error logs</h6>
+                      <span class="text-xs">1 is active, <span class="font-weight-bold">40 closed</span></span>
                     </div>
-                  </li>
-                  <li class="list-group-item border-0 d-flex justify-content-between ps-0 border-radius-lg">
-                    <div class="d-flex align-items-center">
-                      <div class="icon icon-shape icon-sm me-3 bg-gradient-dark shadow text-center">
-                        <i class="ni ni-satisfied text-white opacity-10"></i>
-                      </div>
-                      <div class="d-flex flex-column">
-                        <h6 class="mb-1 text-dark text-sm">Happy users</h6>
-                        <span class="text-xs font-weight-bold">+ 430</span>
-                      </div>
+                  </div>
+                  <div class="d-flex">
+                    <button class="btn btn-link btn-icon-only btn-rounded btn-sm text-dark icon-move-right my-auto"><i
+                        class="ni ni-bold-right" aria-hidden="true"></i></button>
+                  </div>
+                </li>
+                <li class="list-group-item border-0 d-flex justify-content-between ps-0 border-radius-lg">
+                  <div class="d-flex align-items-center">
+                    <div class="icon icon-shape icon-sm me-3 bg-gradient-dark shadow text-center">
+                      <i class="ni ni-satisfied text-white opacity-10"></i>
                     </div>
-                    <div class="d-flex">
-                      <button class="btn btn-link btn-icon-only btn-rounded btn-sm text-dark icon-move-right my-auto"><i
-                          class="ni ni-bold-right" aria-hidden="true"></i></button>
+                    <div class="d-flex flex-column">
+                      <h6 class="mb-1 text-dark text-sm">Happy users</h6>
+                      <span class="text-xs font-weight-bold">+ 430</span>
                     </div>
-                  </li>
-                </ul>
-              </div>
+                  </div>
+                  <div class="d-flex">
+                    <button class="btn btn-link btn-icon-only btn-rounded btn-sm text-dark icon-move-right my-auto"><i
+                        class="ni ni-bold-right" aria-hidden="true"></i></button>
+                  </div>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
-        <footer class="footer pt-3  ">
-          <div class="container-fluid">
-            <div class="row align-items-center justify-content-lg-between">
-              <div class="col-lg-6 mb-lg-0 mb-4">
-                <div class="copyright text-center text-sm text-muted text-lg-start">
-                  ©
-                  <script>
-                    document.write(new Date().getFullYear())
-                  </script>,
-                  made with <i class="fa fa-heart"></i> by
-                  <a href="https://www.creative-tim.com" class="font-weight-bold" target="_blank">Creative Tim</a>
-                  for a better web.
-                </div>
-              </div>
-              <div class="col-lg-6">
-                <ul class="nav nav-footer justify-content-center justify-content-lg-end">
-                  <li class="nav-item">
-                    <a href="https://www.creative-tim.com" class="nav-link text-muted" target="_blank">Creative Tim</a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="https://www.creative-tim.com/presentation" class="nav-link text-muted"
-                      target="_blank">About Us</a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="https://www.creative-tim.com/blog" class="nav-link text-muted" target="_blank">Blog</a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="https://www.creative-tim.com/license" class="nav-link pe-0 text-muted"
-                      target="_blank">License</a>
-                  </li>
-                </ul>
+      </div>
+      <footer class="footer pt-3  ">
+        <div class="container-fluid">
+          <div class="row align-items-center justify-content-lg-between">
+            <div class="col-lg-6 mb-lg-0 mb-4">
+              <div class="copyright text-center text-sm text-muted text-lg-start">
+                ©
+                <script>
+                  document.write(new Date().getFullYear())
+                </script>,
+                made with <i class="fa fa-heart"></i> by
+                <a href="https://www.creative-tim.com" class="font-weight-bold" target="_blank">Creative Tim</a>
+                for a better web.
               </div>
             </div>
+            <div class="col-lg-6">
+              <ul class="nav nav-footer justify-content-center justify-content-lg-end">
+                <li class="nav-item">
+                  <a href="https://www.creative-tim.com" class="nav-link text-muted" target="_blank">Creative Tim</a>
+                </li>
+                <li class="nav-item">
+                  <a href="https://www.creative-tim.com/presentation" class="nav-link text-muted" target="_blank">About
+                    Us</a>
+                </li>
+                <li class="nav-item">
+                  <a href="https://www.creative-tim.com/blog" class="nav-link text-muted" target="_blank">Blog</a>
+                </li>
+                <li class="nav-item">
+                  <a href="https://www.creative-tim.com/license" class="nav-link pe-0 text-muted"
+                    target="_blank">License</a>
+                </li>
+              </ul>
+            </div>
           </div>
-        </footer>
-      </div>
+        </div>
+      </footer>
+    </div>
   </main>
   <div class="fixed-plugin">
     <a class="fixed-plugin-button text-dark position-fixed px-3 py-2">
