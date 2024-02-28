@@ -19,11 +19,11 @@ function actualizarTabla(data) {
     data.forEach(item => {
         const row = document.createElement('tr');
         row.innerHTML = `
-            <td>${item.mensaje_maquina}</td>
-            <td>${item.id_computadora}</td>
-            <td>${item.memoria_disponible}</td>
-            <td>${item.memoria_usada}</td>
-            <td>${item.rendimiento_red}</td>
+            <td>${item.message}</td>
+            <td>${item.computer_id}</td>
+            <td>${item.available_memory}</td>
+            <td>${item.used_memory}</td>
+            <td>${item.network_performance}</td>
         `;
         tbody.appendChild(row);
     });
