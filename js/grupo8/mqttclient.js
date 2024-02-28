@@ -31,22 +31,16 @@ client.onMessageArrived = function (message) {
     console.log("Mensaje recibido");
     console.log(message);
     let destination = message.destinationName;
-    if (destination === "grupo1") {
+    if (destination === "prueba1") {
         let response = JSON.parse(message.payloadString);
 
-        // Extraer los datos necesarios del mensaje JSON recibido
-        let memoryAvailable = response.memoria_disponible;
-        let memoryUsed = response.memoria_usada;
-        let networkPerformance = response.rendimiento_red;
-        let computerID = response.id_computadora;
+        // Extraer todos los datos del mensaje JSON recibido
+        let memoryAvailable = response.available_memory;
+        let memoryUsed = response.used_memory;
+        let networkPerformance = response.network_performance;
+        let computerID = response.computer_id;
 
-        // Imprimir los valores recibidos en la consola
-        console.log("Memoria Disponible:", memoryAvailable);
-        console.log("Memoria Usada:", memoryUsed);
-        console.log("Rendimiento de Red:", networkPerformance);
-        console.log("ID de la Computadora:", computerID);
-
-        // Actualizar los valores en tiempo real en la página (opcional)
+        // Actualizar el contenido de los elementos HTML con los valores recibidos
         document.getElementById("memoryAvailableValue").textContent = memoryAvailable;
         document.getElementById("memoryUsedValue").textContent = memoryUsed;
         document.getElementById("networkPerformanceValue").textContent = networkPerformance;
