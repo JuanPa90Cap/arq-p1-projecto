@@ -272,10 +272,10 @@
                 <div class="col-8">
                   <div class="numbers">
 
-                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Rendimiento Primera PC</p>
-                    <h5 class="font-weight-bolder">
-                      El rendimiento es : 
-                    </h5>
+                    <p class="text-sm mb-0 text-uppercase font-weight-bold">ID COMPUTADORA</p>
+                    <h5 id="computerIDValue" class="font-weight-bolder">
+                      0 
+                  </h5>                  
                     <p class="mb-0">
                       <span class="text-success text-sm font-weight-bolder">+55%</span>
                       Actualización por segundo
@@ -297,9 +297,9 @@
               <div class="row">
                 <div class="col-8">
                   <div class="numbers">
-                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Temperatura primera PC</p>
-                    <h5 class="font-weight-bolder">
-                      La temperatura es : 
+                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Memoria Disponible</p>
+                    <h5 id="memoryAvailableValue" class="font-weight-bolder">
+                     0 
                     </h5>
                     <p class="mb-0">
                       <span class="text-success text-sm font-weight-bolder">+3%</span>
@@ -322,9 +322,9 @@
               <div class="row">
                 <div class="col-8">
                   <div class="numbers">
-                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Almacenamiento primera PC</p>
-                    <h5 class="font-weight-bolder">
-                      Primera PC almacenamiento es: 
+                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Memoria Usada</p>
+                    <h5 id="memoryUsedValue" class="font-weight-bolder">
+                      0
                     </h5>
                     <p class="mb-0">
                       <span class="text-danger text-sm font-weight-bolder">-2%</span>
@@ -348,8 +348,8 @@
                 <div class="col-8">
                   <div class="numbers">
                     <p class="text-sm mb-0 text-uppercase font-weight-bold">Alcance de red</p>
-                    <h5 class="font-weight-bolder">
-                      Primera computadora es:
+                    <h5 id="networkPerformanceValue" class="font-weight-bolder">
+                     0
                     </h5>
                     <p class="mb-0">
                       <span class="text-success text-sm font-weight-bolder">+5%</span> than last month
@@ -366,7 +366,7 @@
           </div>
         </div>
       </div>
-      <!--segunda pc -->
+      <!--segunda pc 
       <div class="container-fluid py-4">
         <div class="row">
           <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
@@ -470,7 +470,7 @@
             </div>
           </div>
         </div>
-      <!--se acabo-->
+      se acabo-->
       <div class="row mt-4">
         <div class="col-lg-7 mb-lg-0 mb-4">
           <div class="card z-index-2 h-100">
@@ -542,9 +542,29 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Sales Dashboard</title>
+        <style>
+          table {
+            width: 100%;
+            border-collapse: collapse;
+          }
+
+          th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+          }
+
+          th {
+            background-color: #f2f2f2;
+          }
+
+          tr:nth-child(even) {
+            background-color: #f2f2f2;
+          }
+        </style>
       </head>
       <body>
-      
+
       <div class="row mt-4">
         <div class="col-lg-7 mb-lg-0 mb-4">
           <div class="card">
@@ -555,6 +575,15 @@
             </div>
             <div class="table-responsive">
               <table class="table align-items-center">
+                <thead>
+                  <tr>
+                    <th>Machine Message</th>
+                    <th>Computer ID</th>
+                    <th>Available Memory (MB)</th>
+                    <th>Used Memory (%)</th>
+                    <th>Network Performance (MB)</th>
+                  </tr>
+                </thead>
                 <tbody id="tboy-datos">
                   <!-- Aquí se actualizarán los datos -->
                 </tbody>
@@ -563,7 +592,7 @@
           </div>
         </div>
       </div>
-      
+
       <script>
         // Función para obtener los datos del servidor y actualizar la tabla en el HTML
         function obtenerDatosYActualizarTabla() {
@@ -576,12 +605,12 @@
             })
             .catch(error => console.error('Error:', error));
         }
-      
+
         // Función para actualizar la tabla con los datos recibidos del servidor
         function actualizarTabla(data) {
           const tbody = document.getElementById('tboy-datos');
           tbody.innerHTML = ''; // Limpiar el contenido anterior del tbody
-      
+
           // Iterar sobre los datos y agregar filas a la tabla
           data.forEach(item => {
             const row = document.createElement('tr');
@@ -595,13 +624,14 @@
             tbody.appendChild(row);
           });
         }
-      
+
         // Llamar a la función al cargar la página para obtener y mostrar los datos
         obtenerDatosYActualizarTabla();
       </script>
-      
+
       </body>
       </html>
+
        
      <!--FIN TABLA-->
 
