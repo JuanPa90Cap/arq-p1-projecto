@@ -1,6 +1,7 @@
-/*################################################################################################*/
-/*####################################### CLIENTE MQTT ###########################################*/
-/*################################################################################################*/
+/* ################################################################################################ */
+/* ####################################### CLIENTE MQTT ########################################### */
+/* ################################################################################################ */
+
 // Configuración del broker MQTT
 var wsbroker = "broker.hivemq.com";
 var wsport = 8000;
@@ -46,6 +47,7 @@ function updateElement(elementId, value) {
 function formatSystemInfo(info) {
     return `Sistema: ${info.Sistema}, Release: ${info.Release}, Procesador: ${info.Procesador}, SO: ${info.Nombre_Sistema_Operativo}, Arquitectura: ${info.Arquitectura}`;
 }
+
 // Opciones de conexión MQTT
 var options = {
     timeout: 3,
