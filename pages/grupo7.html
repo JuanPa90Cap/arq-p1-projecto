@@ -538,50 +538,52 @@
               </tbody>
           </table>
       
-          <!-- Scripts JavaScript -->
-          <script>
-            // Función para cargar los últimos 10 datos de rendimiento para una máquina específica
-            async function cargarUltimos10DatosMaquina(numeroMaquina, tablaId) {
-                try {
-                    const response = await fetch(`http://localhost:3000/datos_rendimiento/maquina${numeroMaquina}`);
-                    const datos = await response.json();
-    
-                    // Limpiar tabla
-                    document.getElementById(tablaId).innerHTML = '';
-    
-                    // Filtrar y llenar la tabla con los últimos 10 datos
-                    const ultimos10Datos = datos
-                        .filter(dato => dato.MachineID === `maquina${numeroMaquina}`)
-                        .slice(0, 10); // Tomar los primeros 10 datos
-    
-                    ultimos10Datos.forEach(dato => {
-                        const fila = document.createElement('tr');
-                        const fechaBaseDatos = new Date(dato.FECHA);
-                        const fechaFormateada = fechaBaseDatos.toLocaleString();
-                        fila.innerHTML = `
-                            <td>${dato.ID}</td>
-                            <td>${dato.MachineID}</td>
-                            <td>${dato.CPU}</td>
-                            <td>${dato.RAM}</td>
-                            <td>${dato.ROM}</td>
-                            <td>${dato.SYSTEM}</td>
-                            <td>${fechaFormateada}</td>
-                        `;
-                        document.getElementById(tablaId).appendChild(fila);
-                    });
-                } catch (error) {
-                    console.error('Error al cargar datos:', error);
-                }
-            }
-    
-              // Cargar los últimos 10 datos para las máquinas 3, 4, 5 y 6 al cargar la página
-              window.onload = () => {
-                  cargarUltimos10DatosMaquina(3, 'tablaDatosMaquina3');
-                  cargarUltimos10DatosMaquina(4, 'tablaDatosMaquina4');
-                  cargarUltimos10DatosMaquina(5, 'tablaDatosMaquina5');
-                  cargarUltimos10DatosMaquina(6, 'tablaDatosMaquina6');
-              };
-          </script>
+<!-- Scripts JavaScript -->
+<script>
+  // Función para cargar los últimos 10 datos de rendimiento para una máquina específica
+  async function cargarUltimos10DatosMaquina(numeroMaquina, tablaId) {
+    try {
+      // Reemplaza '192.168.1.2' con la dirección IP de la máquina que ejecuta el servidor Node.js
+      const response = await fetch(`http://192.168.137.1:3000/datos_rendimiento/maquina${numeroMaquina}`);
+      const datos = await response.json();
+
+      // Limpiar tabla
+      document.getElementById(tablaId).innerHTML = '';
+
+      // Filtrar y llenar la tabla con los últimos 10 datos
+      const ultimos10Datos = datos
+        .filter(dato => dato.MachineID === `maquina${numeroMaquina}`)
+        .slice(0, 10); // Tomar los primeros 10 datos
+
+      ultimos10Datos.forEach(dato => {
+        const fila = document.createElement('tr');
+        const fechaBaseDatos = new Date(dato.FECHA);
+        const fechaFormateada = fechaBaseDatos.toLocaleString();
+        fila.innerHTML = `
+            <td>${dato.ID}</td>
+            <td>${dato.MachineID}</td>
+            <td>${dato.CPU}</td>
+            <td>${dato.RAM}</td>
+            <td>${dato.ROM}</td>
+            <td>${dato.SYSTEM}</td>
+            <td>${fechaFormateada}</td>
+        `;
+        document.getElementById(tablaId).appendChild(fila);
+      });
+    } catch (error) {
+      console.error('Error al cargar datos:', error);
+    }
+  }
+
+  // Cargar los últimos 10 datos para las máquinas 3, 4, 5 y 6 al cargar la página
+  window.onload = () => {
+    cargarUltimos10DatosMaquina(3, 'tablaDatosMaquina3');
+    cargarUltimos10DatosMaquina(4, 'tablaDatosMaquina4');
+    cargarUltimos10DatosMaquina(5, 'tablaDatosMaquina5');
+    cargarUltimos10DatosMaquina(6, 'tablaDatosMaquina6');
+  };
+</script>
+
       <footer class="footer pt-3  ">
         <div class="container-fluid">
           <div class="row align-items-center justify-content-lg-between">
