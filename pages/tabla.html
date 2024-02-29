@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Datos de Rendimiento</title>
+</head>
+<body>
+    <!-- Tabla para mostrar datos de rendimiento para la máquina 3 -->
+    <h2>Máquina 3</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>MachineID</th>
+                <th>CPU</th>
+                <th>RAM</th>
+                <th>ROM</th>
+                <th>SYSTEM</th>
+                <th>FECHA</th>
+            </tr>
+        </thead>
+        <tbody id="tablaDatosMaquina3">
+            <!-- Los datos se cargarán aquí mediante JavaScript -->
+        </tbody>
+    </table>
+
+    <!-- Tabla para mostrar datos de rendimiento para la máquina 4 -->
+    <h2>Máquina 4</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>MachineID</th>
+                <th>CPU</th>
+                <th>RAM</th>
+                <th>ROM</th>
+                <th>SYSTEM</th>
+                <th>FECHA</th>
+            </tr>
+        </thead>
+        <tbody id="tablaDatosMaquina4">
+            <!-- Los datos se cargarán aquí mediante JavaScript -->
+        </tbody>
+    </table>
+
+    <!-- Tabla para mostrar datos de rendimiento para la máquina 5 -->
+    <h2>Máquina 5</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>MachineID</th>
+                <th>CPU</th>
+                <th>RAM</th>
+                <th>ROM</th>
+                <th>SYSTEM</th>
+                <th>FECHA</th>
+            </tr>
+        </thead>
+        <tbody id="tablaDatosMaquina5">
+            <!-- Los datos se cargarán aquí mediante JavaScript -->
+        </tbody>
+    </table>
+
+    <!-- Tabla para mostrar datos de rendimiento para la máquina 6 -->
+    <h2>Máquina 6</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>MachineID</th>
+                <th>CPU</th>
+                <th>RAM</th>
+                <th>ROM</th>
+                <th>SYSTEM</th>
+                <th>FECHA</th>
+            </tr>
+        </thead>
+        <tbody id="tablaDatosMaquina6">
+            <!-- Los datos se cargarán aquí mediante JavaScript -->
+        </tbody>
+    </table>
+
+    <!-- Scripts JavaScript -->
+    <script>
+        // Función para cargar los últimos 10 datos de rendimiento para una máquina específica
+        async function cargarUltimos10DatosMaquina(numeroMaquina, tablaId) {
+            try {
+                const response = await fetch(`http://localhost:3000/datos_rendimiento/maquina${numeroMaquina}`);
+                const datos = await response.json();
+
+                // Limpiar tabla
+                document.getElementById(tablaId).innerHTML = '';
+
+                // Filtrar y llenar la tabla con los últimos 10 datos
+                const ultimos10Datos = datos
+                    .filter(dato => dato.MachineID === `maquina${numeroMaquina}`)
+                    .slice(0, 10); // Tomar los primeros 10 datos
+
+                ultimos10Datos.forEach(dato => {
+                    const fila = document.createElement('tr');
+                    fila.innerHTML = `
+                        <td>${dato.ID}</td>
+                        <td>${dato.MachineID}</td>
+                        <td>${dato.CPU}</td>
+                        <td>${dato.RAM}</td>
+                        <td>${dato.ROM}</td>
+                        <td>${dato.SYSTEM}</td>
+                        <td>${dato.FECHA}</td>
+                    `;
+                    document.getElementById(tablaId).appendChild(fila);
+                });
+            } catch (error) {
+                console.error('Error al cargar datos:', error);
+            }
+        }
+
+        // Cargar los últimos 10 datos para las máquinas 3, 4, 5 y 6 al cargar la página
+        window.onload = () => {
+            cargarUltimos10DatosMaquina(3, 'tablaDatosMaquina3');
+            cargarUltimos10DatosMaquina(4, 'tablaDatosMaquina4');
+            cargarUltimos10DatosMaquina(5, 'tablaDatosMaquina5');
+            cargarUltimos10DatosMaquina(6, 'tablaDatosMaquina6');
+        };
+    </script>
+</body>
+</html>
