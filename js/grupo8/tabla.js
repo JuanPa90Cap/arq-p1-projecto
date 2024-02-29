@@ -18,13 +18,18 @@ function actualizarTabla(data) {
     // Iterar sobre los datos y agregar filas a la tabla
     data.forEach(item => {
         const row = document.createElement('tr');
+        // Obtener la fecha y hora en un formato legible
+        const formattedTimestamp = new Date(item.timestamp).toLocaleString();
         row.innerHTML = `
             <td>${item.message}</td>
             <td>${item.computer_id}</td>
             <td>${item.available_memory}</td>
             <td>${item.used_memory}</td>
             <td>${item.network_performance}</td>
+            <td>${formattedTimestamp}</td> <!-- Mostrar la fecha y hora formateada -->
         `;
         tbody.appendChild(row);
     });
+
+
 }

@@ -39,12 +39,27 @@ client.onMessageArrived = function (message) {
         let memoryUsed = response.used_memory;
         let networkPerformance = response.network_performance;
         let computerID = response.computer_id;
+        let timestamp = response.timestamp;
 
-        // Actualizar el contenido de los elementos HTML con los valores recibidos
-        document.getElementById("memoryAvailableValue").textContent = memoryAvailable;
-        document.getElementById("memoryUsedValue").textContent = memoryUsed;
-        document.getElementById("networkPerformanceValue").textContent = networkPerformance;
-        document.getElementById("computerIDValue").textContent = computerID;
+        // Mostrar la fecha y la hora recibidas
+        let formattedTimestamp = new Date(timestamp).toLocaleString();
+        console.log(computerID);
+        // Determinar qué computadora es y actualizar los elementos HTML correspondientes
+        if (computerID === "Machine 1") {
+            console.log("Estoy en la maquina 1");
+            document.getElementById("computerIDValue1").textContent = computerID;
+            document.getElementById("memoryAvailableValue1").textContent = memoryAvailable;
+            document.getElementById("memoryUsedValue1").textContent = memoryUsed;
+            document.getElementById("networkPerformanceValue1").textContent = networkPerformance;
+            document.getElementById("formattedTimestamp1").textContent = formattedTimestamp;
+        } else if (computerID === "Machine 2") {
+            console.log("Estoy en la maquina 2");
+            document.getElementById("computerIDValue2").textContent = computerID;
+            document.getElementById("memoryAvailableValue2").textContent = memoryAvailable;
+            document.getElementById("memoryUsedValue2").textContent = memoryUsed;
+            document.getElementById("networkPerformanceValue2").textContent = networkPerformance;
+            document.getElementById("formattedTimestamp2").textContent = formattedTimestamp;
+        }
     }
 };
 
