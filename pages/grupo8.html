@@ -370,112 +370,113 @@
     <body>
     
       <!DOCTYPE html>
-      <html lang="en">
-      <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Base de datos</title>
-        <style>
-          table {
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Base de datos</title>
+    <style>
+        table {
             width: 100%;
             border-collapse: collapse;
-          }
-      
-          th, td {
+        }
+
+        th, td {
             border: 1px solid #ddd;
             padding: 8px;
             text-align: left;
-          }
-      
-          th {
+        }
+
+        th {
             background-color: #f2f2f2;
-          }
-      
-          tr:nth-child(even) {
+        }
+
+        tr:nth-child(even) {
             background-color: #f2f2f2;
-          }
-        </style>
-      </head>
-      <body>
-      
-      <div class="row mt-4">
-        <div class="col-lg-7 mb-lg-0 mb-4">
-          <div class="card">
+        }
+    </style>
+</head>
+<body>
+
+<div class="row mt-4">
+    <div class="col-lg-7 mb-lg-0 mb-4">
+        <div class="card">
             <div class="card-header pb-0 p-3">
-              <div class="d-flex justify-content-between">
-                <h6 class="mb-2">Base de datos </h6>
-              </div>
+                <div class="d-flex justify-content-between">
+                    <h6 class="mb-2">Base de datos</h6>
+                </div>
             </div>
             <div class="table-responsive">
-              <table class="table align-items-center">
-                <thead>
-                  <tr>
-                    <th>Machine Message</th>
-                    <th>Computer ID</th>
-                    <th>Available Memory (MB)</th>
-                    <th>Used Memory (%)</th>
-                    <th>Network Performance (MB)</th>
-                    <th>Fecha y Hora</th> <!-- Se agrega la columna de Fecha y Hora -->
-                  </tr>
-                </thead>
-                <tbody id="tboy-datos">
-                  <!-- Aquí se actualizarán los datos -->
-                </tbody>
-              </table>
+                <table class="table align-items-center">
+                    <thead>
+                    <tr>
+                        <th>Machine Message</th>
+                        <th>Computer ID</th>
+                        <th>Available Memory (MB)</th>
+                        <th>Used Memory (%)</th>
+                        <th>Network Performance (MB)</th>
+                        <th>Fecha y Hora</th> <!-- Se agrega la columna de Fecha y Hora -->
+                    </tr>
+                    </thead>
+                    <tbody id="tboy-datos">
+                    <!-- Aquí se actualizarán los datos -->
+                    </tbody>
+                </table>
             </div>
-          </div>
         </div>
-      </div>
-      
-      <script>
-        // Función para obtener los datos del servidor y actualizar la tabla en el HTML
-        function obtenerDatosYActualizarTabla() {
-          fetch('http://localhost/api.php') // Reemplaza la URL con la ruta correcta hacia tu archivo PHP
+    </div>
+</div>
+
+<script>
+    // Función para obtener los datos del servidor y actualizar la tabla en el HTML
+    function obtenerDatosYActualizarTabla() {
+        fetch('http://localhost/api.php') // Reemplaza la URL con la ruta correcta hacia tu archivo PHP
             .then(response => response.json())
             .then(data => {
-              console.log(data);
-              actualizarTabla(data);
-              crearGraficaBarras(data); // Llamar a la función para crear la gráfica de barras con los datos actualizados
+                console.log(data);
+                actualizarTabla(data);
+                crearGraficaBarras(data); // Llamar a la función para crear la gráfica de barras con los datos actualizados
             })
             .catch(error => console.error('Error:', error));
-        }
-      
-        // Función para actualizar la tabla con los datos recibidos del servidor
-        function actualizarTabla(data) {
-          const tbody = document.getElementById('tboy-datos');
-          tbody.innerHTML = ''; // Limpiar el contenido anterior del tbody
-      
-          // Obtener solo los últimos 10 elementos del array de datos
-          const ultimosDatos = data.slice(-10);
-      
-          // Iterar sobre los datos y agregar filas a la tabla
-          ultimosDatos.forEach(item => {
+    }
+
+    // Función para actualizar la tabla con los datos recibidos del servidor
+    function actualizarTabla(data) {
+        const tbody = document.getElementById('tboy-datos');
+        tbody.innerHTML = ''; // Limpiar el contenido anterior del tbody
+
+        // Obtener solo los últimos 40 elementos del array de datos
+        const ultimosDatos = data.slice(-40);
+
+        // Iterar sobre los datos y agregar filas a la tabla
+        ultimosDatos.forEach(item => {
             const row = document.createElement('tr');
             // Obtener la fecha y hora en un formato legible
             const formattedTimestamp = new Date(item.timestamp).toLocaleString();
             row.innerHTML = `
-              <td>${item.message}</td>
-              <td>${item.computer_id}</td>
-              <td>${item.available_memory}</td>
-              <td>${item.used_memory}</td>
-              <td>${item.network_performance}</td>
-              <td>${formattedTimestamp}</td> <!-- Mostrar la fecha y hora formateada -->
+                <td>${item.message}</td>
+                <td>${item.computer_id}</td>
+                <td>${item.available_memory}</td>
+                <td>${item.used_memory}</td>
+                <td>${item.network_performance}</td>
+                <td>${formattedTimestamp}</td> <!-- Mostrar la fecha y hora formateada -->
             `;
             tbody.appendChild(row);
-          });
-        }
-      
-        // Función para crear la gráfica de barras (esta función puede ir aquí o donde se necesite)
-        function crearGraficaBarras(data) {
-          // Código para crear la gráfica de barras
-        }
-      
-        // Llamar a la función al cargar la página para obtener y mostrar los datos
-        obtenerDatosYActualizarTabla();
-      </script>
-      
-      </body>
-      </html>
+        });
+    }
+
+    // Función para crear la gráfica de barras (esta función puede ir aquí o donde se necesite)
+    function crearGraficaBarras(data) {
+        // Código para crear la gráfica de barras
+    }
+
+    // Llamar a la función al cargar la página para obtener y mostrar los datos
+    obtenerDatosYActualizarTabla();
+</script>
+
+</body>
+</html>
+
       
     
       <div class="col-lg-5">
