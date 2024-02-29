@@ -297,7 +297,7 @@
                 <div class="col-8">
                   <div class="numbers">
                     <p class="text-sm mb-0 text-uppercase font-weight-bold">ID CPU</p>
-                    <h5 id="computerIDValue" class="font-weight-bolder">
+                    <h5 id="computerIDValueMachine1" class="font-weight-bolder">
                       53,000
                     </h5>
                     <p class="mb-0">
@@ -322,7 +322,7 @@
                 <div class="col-8">
                   <div class="numbers">
                     <p class="text-sm mb-0 text-uppercase font-weight-bold">Memoria Disponible </p>
-                    <h5 id="memoryAvailableValue" class="font-weight-bolder">
+                    <h5 id="memoryAvailableValueMachine1" class="font-weight-bolder">
                       2,300
                     </h5>
                     <p class="mb-0">
@@ -347,7 +347,7 @@
                 <div class="col-8">
                   <div class="numbers">
                     <p class="text-sm mb-0 text-uppercase font-weight-bold">Memoria Usada</p>
-                    <h5 id="memoryUsedValue" class="font-weight-bolder">
+                    <h5 id="memoryUsedValueMachine1" class="font-weight-bolder">
                       +3,462
                     </h5>
                     <p class="mb-0">
@@ -372,7 +372,7 @@
                 <div class="col-8">
                   <div class="numbers">
                     <p class="text-sm mb-0 text-uppercase font-weight-bold">Rendimiento Red</p>
-                    <h5 id="networkPerformanceValue" class="font-weight-bolder">
+                    <h5 id="networkPerformanceValueMachine1" class="font-weight-bolder">
                       0
                     </h5>
                     <p class="mb-0">
@@ -389,7 +389,7 @@
             </div>
           </div>
         </div>
-        <!-- Empieza la otra coputadora
+        <!-- Empieza la otra coputadora-->
       <div class="row">
         <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
           <div class="card">
@@ -397,8 +397,8 @@
               <div class="row">
                 <div class="col-8">
                   <div class="numbers">
-                    <p class="text-sm mb-0 text-uppercase font-weight-bold">USO CPU</p>
-                    <h5 id="memoryAvailableValue2" class="font-weight-bolder">
+                    <p class="text-sm mb-0 text-uppercase font-weight-bold">CPU</p>
+                    <h5 id="computerIDValueMachine2" class="font-weight-bolder">
                     Hola Kevin
                     </h5>
                     <p class="mb-0">
@@ -422,8 +422,8 @@
               <div class="row">
                 <div class="col-8">
                   <div class="numbers">
-                    <p class="text-sm mb-0 text-uppercase font-weight-bold">USO MEMORIA</p>
-                    <h5 id="memoryUsedValue2" class="font-weight-bolder">
+                    <p class="text-sm mb-0 text-uppercase font-weight-bold">MEMORIA</p>
+                    <h5 id="memoryAvailableValueMachine2" class="font-weight-bolder">
                       2,300
                     </h5>
                     <p class="mb-0">
@@ -447,8 +447,8 @@
               <div class="row">
                 <div class="col-8">
                   <div class="numbers">
-                    <p class="text-sm mb-0 text-uppercase font-weight-bold">RENDIMIENTO RED</p>
-                    <h5 id="networkPerformanceValue2" class="font-weight-bolder">
+                    <p class="text-sm mb-0 text-uppercase font-weight-bold">MEMORIA USADA</p>
+                    <h5 id="memoryUsedValueMachine2" class="font-weight-bolder">
                       +3,462
                     </h5>
                     <p class="mb-0">
@@ -472,8 +472,8 @@
               <div class="row">
                 <div class="col-8">
                   <div class="numbers">
-                    <p class="text-sm mb-0 text-uppercase font-weight-bold">TEMPERATURA</p>
-                    <h5 id="temperatureValue2" class="font-weight-bolder">
+                    <p class="text-sm mb-0 text-uppercase font-weight-bold">RED</p>
+                    <h5 id="networkPerformanceValueMachine2" class="font-weight-bolder">
                       $103,430
                     </h5>
                     <p class="mb-0">
@@ -491,7 +491,7 @@
           </div>
         </div>
 
-      Termina la otra coputadora-->
+      <!-- Termina la otra coputadora-->
 
         <!-- Grafica estadistica-->
         <div class="row mt-4">
@@ -664,8 +664,7 @@
 
 
 
-
-<!-- Tabla-->
+<!-- Tabla única-->
 
 <div class="row mt-4">
   <div class="col-lg-7 mb-lg-0 mb-4">
@@ -679,6 +678,7 @@
         <table class="table align-items-center">
           <thead>
             <tr>
+              <th>Fecha</th> <!-- Nueva columna para la fecha -->
               <th>Mensaje de la máquina</th>
               <th>ID de la computadora</th>
               <th>Memoria disponible</th>
@@ -731,6 +731,7 @@
       const item = datos[i];
       const row = document.createElement('tr');
       row.innerHTML = `
+        <td>${item.fecha}</td> <!-- Nueva columna para la fecha -->
         <td>${item.mensaje_maquina}</td>
         <td>${item.id_computadora}</td>
         <td>${item.memoria_disponible}</td>
@@ -758,11 +759,10 @@
 
   // Actualizar la tabla cada 5 segundos
   obtenerDatosYActualizarTabla();
-  setInterval(obtenerDatosYActualizarTabla, 1000);
+  setInterval(obtenerDatosYActualizarTabla, 5000);
 </script>
 
-<!-- Fin tabla-->
-
+<!-- Fin tabla única-->
 
 
 
