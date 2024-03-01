@@ -3,10 +3,11 @@ import paho.mqtt.client as mqtt
 import json
 import time
 import platform
+from datetime import datetime  # Importa el módulo datetime
 
 # Configuración de MQTT
 MQTT_BROKER = "mqtt-dashboard.com"  # Puedes cambiarlo al broker MQTT que estés utilizando
-MQTT_TOPIC = "grupo1"
+MQTT_TOPIC = "maquina1"
 
 # Función de conexión al broker MQTT
 def on_connect(client, userdata, flags, rc):
@@ -26,6 +27,9 @@ client.on_message = on_message
 client.connect(MQTT_BROKER, 1883, 60)
 
 while True:
+    # Obtener la fecha y hora actual
+    fecha_actual = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
     # Obtener la cantidad de memoria disponible
     memoria_disponible = round(psutil.virtual_memory().available / (1024 * 1024), 2)
 
@@ -38,9 +42,12 @@ while True:
     # Obtener el ID de la computadora
     id_computadora = platform.node()
 
+    maquina="Maquina 1"
+
     # Crear un diccionario con los datos
     datos = {
-        "mensaje_maquina": "Maquina 1",
+        "identificador": maquina,
+        "fecha_hora": fecha_actual,  # Agrega la fecha y hora actual
         "id_computadora": id_computadora,
         "memoria_disponible": memoria_disponible,
         "memoria_usada": memoria_usada,
@@ -58,4 +65,4 @@ while True:
     print(mensaje_json)
 
     # Esperar segundos antes de la próxima actualización
-    time.sleep(15)
+    time.sleep(3)
