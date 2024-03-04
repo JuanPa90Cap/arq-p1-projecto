@@ -3,20 +3,20 @@
 /*################################################################################################*/
 
 //var wsbroker = "0.tcp.sa.ngrok.io";
-var wsbroker = "broker.hivemq.com";
+var wsbroker = "mqtt-dashboard.com";
 //var wsbroker = "localhost";
 
 //var wsport = 14792; // port for above
 var wsport = 1883; // port for above
 var client = new Paho.MQTT.Client(
-	wsbroker,
-	//Number(wsport),
-	Number(8000),
-	"myclientid_" + parseInt(Math.random() * 100, 10)
+    wsbroker,
+    //Number(wsport),
+    Number(8000),
+    "myclientid_" + parseInt(Math.random() * 100, 10)
 );
 
 client.onConnectionLost = function (responseObject) {
-	console.log("connection lost: " + responseObject.errorMessage);
+    console.log("connection lost: " + responseObject.errorMessage);
 };
 
 /*################################################################################################*/
@@ -24,75 +24,63 @@ client.onConnectionLost = function (responseObject) {
 /*################################################################################################*/
 let prevCPUValue = 0;
 let prevMemoryValue = 0;
-let prevDiskValue = 0;
 let prevRecepcionValue = 0;
 
+let prevCPUValueMachine1 = 0;
+let prevMemoryValueMachine1 = 0;
+let prevRecepcionValueMachine1 = 0;
+
+let prevCPUValueMachine2 = 0;
+let prevMemoryValueMachine2 = 0;
+let prevRecepcionValueMachine2 = 0;
+
 client.onMessageArrived = function (message) {
-    console.log("hola aqui")
-    console.log(message)
-	let destination = message.destinationName;
-	if (destination === "probar_1") {
+    console.log("Mensaje recibido");
+    console.log(message);
+    let destination = message.destinationName;
+    if (destination === "maquina1" || destination === "maquina2") { 
         let response = JSON.parse(message.payloadString);
-        dataFormat = response;
-        let dataMemoria = dataFormat.Memoria;
-        let dataDisco = dataFormat.Disco;
-        let dataRecepcion = dataFormat.Recepcion;
-        
-        //info pc
-        document.getElementById("arquitecturaValue").innerText = response.Arquitectura;
-        document.getElementById("sistemaValue").innerText = response.Sistema;
-        document.getElementById("ramValue").innerText = response.Ram;
-        document.getElementById("procesadorValue").innerText = response.Procesador;
-        document.getElementById("almacenamientoValue").innerText = response.Almacenamiento;
 
-        // Calcular la diferencia con respecto al valor anterior
-        let diffCPU = dataCPU - prevCPUValue;
-        let diffMemory = dataMemoria - prevMemoryValue;
-        let diffDisk = dataDisco - prevDiskValue;
-        let diffRecepcion = dataRecepcion - prevRecepcionValue;
+        // Extraer los datos necesarios del mensaje JSON recibido
+        let memoryAvailable = response.memoria_disponible;
+        let memoryUsed = response.memoria_usada;
+        let networkPerformance = response.rendimiento_red;
+        let computerID = response.id_computadora; 
 
-        // Calcular el porcentaje de cambio
-        let percentageCPU = calculatePercentage(diffCPU, prevCPUValue);
-        let percentageMemory = calculatePercentage(diffMemory, prevMemoryValue);
-        let percentageDisk = calculatePercentage(diffDisk, prevDiskValue);
-        let percentageRecepcion = calculatePercentage(diffRecepcion, prevRecepcionValue);
+        // Actualizar los valores en tiempo real en la página según la máquina
+        if (destination === "maquina1") {
+            document.getElementById("memoryAvailableValueMachine1").textContent = memoryAvailable;
+            document.getElementById("memoryUsedValueMachine1").textContent = memoryUsed;
+            document.getElementById("networkPerformanceValueMachine1").textContent = networkPerformance;
+            document.getElementById("computerIDValueMachine1").textContent = computerID; 
 
-        // Actualizar los valores en tiempo real en la página
-        document.getElementById("cpuValue").innerText = dataCPU;
-        document.getElementById("memoryValue").innerText = dataMemoria;
-        document.getElementById("diskValue").innerText = dataDisco;
-        document.getElementById("RecepcionValue").innerText = dataRecepcion;
+            // Guardar valores previos para calcular cambios porcentuales
+            prevMemoryValueMachine1 = memoryUsed;
+            // Actualizar otros valores previos si es necesario
+        } else if (destination === "maquina2") {
+            document.getElementById("memoryAvailableValueMachine2").textContent = memoryAvailable;
+            document.getElementById("memoryUsedValueMachine2").textContent = memoryUsed;
+            document.getElementById("networkPerformanceValueMachine2").textContent = networkPerformance;
+            document.getElementById("computerIDValueMachine2").textContent = computerID; 
 
-        // Actualizar los porcentajes en la página
-        document.getElementById("cpuPercentage").innerHTML = getColoredPercentage(percentageCPU);
-        document.getElementById("memoryPercentage").innerHTML = getColoredPercentage(percentageMemory);
-        document.getElementById("diskPercentage").innerHTML = getColoredPercentage(percentageDisk);
-        document.getElementById("RecepcionPercentage").innerHTML = getColoredPercentage(percentageRecepcion);
-
-        // Actualizar los valores anteriores con los nuevos valores
-        prevCPUValue = dataCPU;
-        prevMemoryValue = dataMemoria;
-        prevDiskValue = dataDisco;
-        prevRecepcionValue = dataRecepcion;
-
-        // Cargar datos CPU, Memoria y Almacenamiento en las gráficas
-        addData(myChartCPU, dataCPU);
-        addData2(myChartMemory, dataMemoria);
-        addData3(myChartDisk, dataDisco);
+            // Guardar valores previos para calcular cambios porcentuales
+            prevMemoryValueMachine2 = memoryUsed;
+            // Actualizar otros valores previos si es necesario
+        }
     }
 };
 
 // Función para calcular el porcentaje de cambio
 function calculatePercentage(diff, prevValue) {
     if (prevValue === 0) {
-        return "0"; // Si el valor anterior es cero, el porcentaje de cambio es cero
+        return "0"; 
     }
 
     let percentage = ((diff / prevValue) * 100).toFixed(2);
     if (isFinite(percentage)) {
         return percentage >= 0 ? "+" + percentage : percentage;
     } else {
-        return "0";
+        return "No Disponible";
     }
 }
 // Función para obtener el porcentaje coloreado
@@ -107,22 +95,23 @@ function getColoredPercentage(percentage) {
 }
 
 var options = {
-	timeout: 3,
-	onSuccess: function () {
-		console.log("mqtt connected");
-		// Connection succeeded; subscribe to our topic, you can add multile lines of these
-		client.subscribe("grupoUCE2024", { qos: 1 });
-	},
-	onFailure: function (message) {
-		console.log("Connection failed: " + message.errorMessage);
-	},
+    timeout: 3,
+    onSuccess: function () {
+        console.log("mqtt connected");
+        // Connection succeeded; subscribe to our topic, you can add multile lines of these
+        client.subscribe("maquina1", { qos: 1 });
+        client.subscribe("maquina2", { qos: 1 }); 
+    },
+    onFailure: function (message) {
+        console.log("Connection failed: " + message.errorMessage);
+    },
 };
 
 
 function testMqtt(){
-	console.log("hi");
+    console.log("hi");
 }
 function initMqtt() {
     console.log
-	client.connect(options);
+    client.connect(options);
 }
